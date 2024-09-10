@@ -2,13 +2,18 @@ cmake_minimum_required(VERSION 3.14)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O0 -g -Wall -Wpedantic")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3 -Wall -Werror -Wpedantic")
 
+include(cmake/BuildConfig.cmake)
 include(cmake/CPM.cmake)
 
 CPMAddPackage("gh:fmtlib/fmt#11.0.2")
-CPMAddPackage("gh:ieroglyph-cnncl-test/mpss-lib#0.3.0")
+
+if(USE_LOCAL_MPSSLIB)
+  add_subdirectory(mpss-lib)
+else()
+  CPMAddPackage("gh:ieroglyph-cnncl-test/mpss-lib#1.0.0")
+endif(USE_LOCAL_MPSSLIB)
+
 CPMAddPackage(
   NAME cxxopts
   GITHUB_REPOSITORY jarro2783/cxxopts
